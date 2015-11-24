@@ -198,6 +198,30 @@
         return $friends;
 
         }
+
+        /**
+         *  @getting profile picture. 
+         *  
+         */
+        public function getDp(){
+             $fb = $this->getFb();
+             try {
+                $uid = $this->getUserId();
+                // Returns a `Facebook\FacebookResponse` object
+                $response = $fb->get('/me/picture?type=large&redirect=false',$_SESSION['accessToken']);
+                 } catch(Facebook\Exceptions\FacebookResponseException $e) {
+                    echo 'Graph returned an error: ' . $e->getMessage();
+                    exit;}
+                catch(Facebook\Exceptions\FacebookSDKException $e) {
+                    echo 'Facebook SDK returned an error: ' . $e->getMessage();
+                     exit;
+                }
+
+                $picture =  $response->getGraphObject();
+                $src = $picture['url'];
+                return $src;
+
+        }
         /**
          *  Updating status on user's wall.
          *  this function require 'publish_actions' permissions.
